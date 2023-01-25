@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
+  },
+  "name": "cs536",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx tsc && node build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baileysostek/CS536.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baileysostek/CS536/issues"
+  },
+  "homepage": "https://github.com/baileysostek/CS536#readme",
+  "description": "",
+  "dependencies": {
+    "ebnf": "^1.9.0"
+  }
+}
