@@ -10,3 +10,5 @@ let parser = new Grammars.BNF.Parser(file.toString());
 
 // Use our parser to parse a string.
 console.log(parser.getAST( '(2 + (2 * -123)) * 5332'));
+
+var test : String = ""
