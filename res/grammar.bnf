@@ -9,6 +9,6 @@
   <RULE_NEGATIVE>    ::= "-"
   <RULE_NON_ZERO>    ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
   <RULE_DIGIT>       ::= "0" | <RULE_NON_ZERO>
+  <RULE_STRING>       ::= "A" | "B"
   <RULE_WHITESPACE>  ::= <RULE_WS> | ""
   <RULE_WS>          ::= " " <RULE_WHITESPACE> | <EOL> <RULE_WHITESPACE> | " " | <EOL>
-  
