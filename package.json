@@ -23,6 +23,7 @@
   "homepage": "https://github.com/baileysostek/CS536#readme",
   "description": "",
   "dependencies": {
-    "ebnf": "^1.9.0"
+    "ebnf": "^1.9.0",
+    "ebnf-parser": "^0.1.10"
   }
 }
