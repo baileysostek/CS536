@@ -1,19 +1,19 @@
 // Define our Token type and an enum representing different tokens.
 export enum TokenType{
-  KEYWORD = "KEYWORD",
-  WHITESPACE = "WHITESPACE",
-  UNDEFINED = "UNDEFINED",
+  KEYWORD = 0,
+  WHITESPACE,
+  UNDEFINED,
 
   // 
-  FUNCTION_NAME = "FUNCTION_NAME",
-  FUNCTION_START = "FUNCTION_START",
-  FUNCTION_END = "FUNCTION_END",
+  FUNCTION_NAME,
+  FUNCTION_START ,
+  FUNCTION_END,
 
   //
-  DELIMITER = "DELIMITER",
+  DELIMITER,
 
   // Variables
-  NUMBER = "NUMBER",
-  STRING = "STRING",
-  BOOLEAN = "BOOLEAN"
+  NUMBER,
+  STRING ,
+  BOOLEAN
 }

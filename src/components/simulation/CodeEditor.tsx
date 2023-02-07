@@ -4,10 +4,6 @@ import React from 'react';
 // MUI Imports
 import { Button } from '@mui/material';
 
-// CodeMirror imports
-import { EditorView } from "@codemirror/view";
-import { EditorState } from "@codemirror/state";
-
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 
 // Import our parsing functionality TODO:Move this to its own standalone utility class.
@@ -41,9 +37,10 @@ export const CodeEditor : React.FunctionComponent<CodeEditorState> = (props : Co
 				onChange={handleEditorChange}
 			/>
 			<Button
+				variant='outlined'
 				onClick={() => {
-					// parse(lex(body));
-					console.log(lex(body));
+					parse(lex(body));
+					// console.log(lex(body));
 
 					  // Test to see if I can call 
   				// vanilla_store.getState().play();

@@ -10,9 +10,6 @@ import { LexerStateStart } from "./LexerStateStart";
 import { LexerState } from "./LexerState";
 import { TokenType } from "./TokenType";
 
-// Import our Zustand vanilla store so that we can change the simulation state.
-import { vanilla_store } from "../../store/SimulationStoreVanilla";
-
 // If this is debug mode
 const DEBUG = true;
 
