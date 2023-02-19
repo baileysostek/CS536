@@ -7,6 +7,19 @@ const variables : Map<String, any> = new Map<String, any>();
 // Here we will create a Map mapping a function name to a callback
 const functions : Map<String, (...params:any) => void> = new Map<String,(...params:any) => void>(); 
 
+// Define any parser specific functions
+registerFunction("var", (name, value = undefined) => {
+  if(value !== undefined){
+    console.log("Set", name, "to", value)
+    variables.set(name, value);
+  }
+  if(variables.has(name)){
+    console.log("Get", name, ":", variables.get(name));
+    return variables.get(name);
+  }
+  return null;
+})
+
 /**
  * The goal of the Parser is to take in our array of tokens which were produced via lexical analysis of an input string and generate a tree structure representing the ways that the different tokens interact with each other. Each node of the tree is its own local-scope and leaf's of each node represent any tokens in a child scope.
  * @param tokens 
