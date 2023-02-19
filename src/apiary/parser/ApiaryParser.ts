@@ -116,7 +116,10 @@ export function parse(incoming_tokens : Array<Token>, flip = true) : void {
           }
           
           // console.log("Calling", token.value, ...parameters)
-          return functions.get(token.value)(...parameter_values);
+          let function_value = functions.get(token.value)(...parameter_values);
+          if(object_stack.length === 0){
+            return function_value;
+          }
         }
       }
     }
