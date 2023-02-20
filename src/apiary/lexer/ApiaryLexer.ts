@@ -25,7 +25,7 @@ const WHITESPACE_REGEX = /^[ |\t]$/;
 const W_0 = new LexerStateStartAndEnd("W_0", TokenType.WHITESPACE); // Start State
 
 const NEW_LINE_REGEX = /^[\n]$/;
-const NEW_LINE = new LexerStateStartAndEnd("NEW_LINE", TokenType.WHITESPACE);// Start State
+const NEW_LINE = new LexerStateStartAndEnd("NEW_LINE", TokenType.WHITESPACE); // Start State
 NEW_LINE.addEdge(NEW_LINE_REGEX, NEW_LINE);
 
 W_0.addEdge(WHITESPACE_REGEX, W_0);
@@ -143,10 +143,10 @@ export function lex(input: string): Array<Token> {
     CURRENT_CHARACTER = character;
 
     // Check if this is a new line, if it is reset our character_number and increment line_number
-    if(character === '\r'){
+    if (character === "\r") {
       continue;
     }
-    if(character === '\n'){
+    if (character === "\n") {
       line_number++;
       character_number = 0;
       console.log("New Line Character:");
@@ -215,7 +215,7 @@ function step(character: string) {
         }
       }
     }
-    
+
     console.log("Test");
     changeState(FAILURE_STATE);
   }
@@ -224,8 +224,8 @@ function step(character: string) {
 function traverseEdgeIfPossible(character: string): boolean {
   // Iterate through all edges of CURRENT_STATE and find a valid transition state.
   console.log("Edges:", CURRENT_STATE.edges);
-  for(let edge of CURRENT_STATE.edges){
-    console.log("Checking Regex:", edge.regex, character === '\n');
+  for (let edge of CURRENT_STATE.edges) {
+    console.log("Checking Regex:", edge.regex, character === "\n");
     // Test if this character abides by the gate on this rule.
     if (edge.regex.test(character)) {
       // Check if we are taking a Jump Edge

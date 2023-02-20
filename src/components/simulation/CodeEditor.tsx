@@ -47,15 +47,10 @@ const baseBannerStyles = css({
   },
 });
 
-const ProgridMain = (props: CodeEditorProps): JSX.Element => {
-  const [body, setBody] = React.useState("helloWorld()");
-
-}
-
-
-export const CodeEditor : React.FunctionComponent<CodeEditorState> = (props : CodeEditorProps) => {
-	
-	const [body, setBody] = React.useState(`
+export const ProgridMain: React.FunctionComponent<CodeEditorState> = (
+  props: CodeEditorProps
+) => {
+  const [body, setBody] = React.useState(`
 var("width", 5)
 var("height", add(var("width"), var("width")))
 
@@ -64,7 +59,7 @@ var("map", map(var("width"), var("height")))
 build(var("map"))
 	`);
 
-	function handleEditorChange(value, event) {
+  function handleEditorChange(value, event) {
     // console.log(value);
     setBody(value);
   }
