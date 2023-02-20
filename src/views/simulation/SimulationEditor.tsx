@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CodeEditor } from "../../components/simulation/CodeEditor";
+import CodeEditor from "../../components/simulation/CodeEditor";
 import ResizableColumnLayout from "../../components/util/ResizableColumnLayout";
 
 type SimulationEditorProps = {};

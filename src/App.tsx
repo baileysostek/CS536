@@ -1,14 +1,17 @@
+import "./App.css";
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-import SimulationEditor from './views/simulation/SimulationEditor';
-import { registerFunction } from './apiary/parser/ApiaryParser';
+import { GlobalStyle, Container } from "./components/layout/global-style";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Nav from "./components/Navbar/Nav";
+import Banner from "./components/Banner/Banner";
+import SimulationEditor from "./views/simulation/SimulationEditor";
+import { registerFunction } from "./apiary/parser/ApiaryParser";
 import { Map } from './progrid/Map';
 
 
-function App() {
 
+  const Homepage = (): JSX.Element => {
+   
   registerFunction("print", (...parameters) => {
     console.log(...parameters)
   })
@@ -53,14 +56,32 @@ function App() {
     return new Map(width, height);
   })
   
+    return (
+      <Container>
+        <GlobalStyle />
+        <Nav />
+      </Container>
+    );
+  };
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <SimulationEditor />
-      </header>
-    </div>
-  );
-}
-
-export default App;
+  
+  const App = () => {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <Nav />
+                <Banner />
+                <SimulationEditor />
+              </div>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    );
+  };
+  
+  export default App;
