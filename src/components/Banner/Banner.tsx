@@ -7,7 +7,6 @@ import shouldForwardProp from "@styled-system/should-forward-prop";
 import { space, flexbox, typography } from "styled-system";
 import { Container } from "semantic-ui-react";
 import { Header } from "../Header";
-import img from "./img/bg.gif";
 
 import { fleurimondColors } from "../theme";
 
