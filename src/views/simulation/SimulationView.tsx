@@ -1,11 +1,9 @@
-import * as React from 'react';
+import * as React from "react";
 
-type SimulationViewProps = {
-
-}
+type SimulationViewProps = {};
 
 const SimulationView: React.FC<SimulationViewProps> = (props) => {
-  return <></>
-}
+  return <></>;
+};
 
 export default SimulationView;

@@ -3,9 +3,12 @@ import { Token } from "../lexer/Token";
 import { TokenType } from "../lexer/TokenType";
 
 // Here are our variables which have been defined
-const variables : Map<String, any> = new Map<String, any>();
+const variables: Map<String, any> = new Map<String, any>();
 // Here we will create a Map mapping a function name to a callback
-const functions : Map<String, (...params:any) => void> = new Map<String,(...params:any) => void>(); 
+const functions: Map<String, (...params: any) => void> = new Map<
+  String,
+  (...params: any) => void
+>();
 
 // Define any parser specific functions
 registerFunction("var", (name, value = undefined) => {
@@ -22,7 +25,7 @@ registerFunction("var", (name, value = undefined) => {
 
 /**
  * The goal of the Parser is to take in our array of tokens which were produced via lexical analysis of an input string and generate a tree structure representing the ways that the different tokens interact with each other. Each node of the tree is its own local-scope and leaf's of each node represent any tokens in a child scope.
- * @param tokens 
+ * @param tokens
  */
 export function parse(incoming_tokens : Array<Token>, flip = true) : void {
   // this is our object stack, we want to push every incoming_token onto the stack in reverse order.
@@ -41,8 +44,8 @@ export function parse(incoming_tokens : Array<Token>, flip = true) : void {
   // console.log("To parse:", JSON.parse(JSON.stringify(object_stack)));
 
   // Now we can start parsing
-  while(object_stack.length > 0){
-    // Pop the top element off of the stack. This decrements the stack size by 1. 
+  while (object_stack.length > 0) {
+    // Pop the top element off of the stack. This decrements the stack size by 1.
     let token = object_stack.pop();
     switch (+token.type) {
       case TokenType.FUNCTION_NAME :{
@@ -126,6 +129,9 @@ export function parse(incoming_tokens : Array<Token>, flip = true) : void {
   }
 }
 
-export function registerFunction(function_name : string, callback_function : (...params:any) => void){
+export function registerFunction(
+  function_name: string,
+  callback_function: (...params: any) => void
+) {
   functions.set(function_name, callback_function);
 }

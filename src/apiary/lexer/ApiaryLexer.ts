@@ -22,7 +22,7 @@ const IGNORED_TOKEN_TYPES = [TokenType.WHITESPACE];
 
 // States and edges for whitespace detection
 const WHITESPACE_REGEX = /^[ |\t]$/;
-const W_0 = new LexerStateStartAndEnd("W_0", TokenType.WHITESPACE);// Start State
+const W_0 = new LexerStateStartAndEnd("W_0", TokenType.WHITESPACE); // Start State
 
 const NEW_LINE_REGEX = /^[\n]$/;
 const NEW_LINE = new LexerStateStartAndEnd("NEW_LINE", TokenType.WHITESPACE);// Start State
@@ -35,12 +35,12 @@ const NUMERIC_RANGE_REGEX = /^[0-9]$/;
 const DECIMAL_POINT_REGEX = /^[\.]$/;
 const NEGATIVE_SIGN_REGEX = /^[\-]$/;
 
-const N_0 = new LexerStateStart("N_0", TokenType.NUMBER);// Start State
+const N_0 = new LexerStateStart("N_0", TokenType.NUMBER); // Start State
 const N_1 = new LexerState("N_1", TokenType.NUMBER);
 const N_2 = new LexerState("N_2", TokenType.NUMBER);
-const N_3 = new LexerStateEnd("N_3", TokenType.NUMBER);// Ending State
-const N_4 = new LexerStateEnd("N_4", TokenType.NUMBER);// Ending State
-const N_5 = new LexerStateEnd("N_5", TokenType.NUMBER);// Ending State
+const N_3 = new LexerStateEnd("N_3", TokenType.NUMBER); // Ending State
+const N_4 = new LexerStateEnd("N_4", TokenType.NUMBER); // Ending State
+const N_5 = new LexerStateEnd("N_5", TokenType.NUMBER); // Ending State
 
 N_0.addEdge(NEGATIVE_SIGN_REGEX, N_1);
 N_0.addEdge(DECIMAL_POINT_REGEX, N_2);
@@ -75,12 +75,12 @@ const OPEN_PAREN_REGEX = /^[\(]$/;
 const CLOSE_PAREN_REGEX = /^[\)]$/;
 const PARAM_DELIMITER_REGEX = /^[,]$/;
 
-const F_0 = new LexerStateStart("F_0", TokenType.FUNCTION_NAME);// Start State
-const F_1 = new LexerState("F_1", TokenType.FUNCTION_NAME );
-const F_2 = new LexerState("F_2", TokenType.FUNCTION_NAME );
-const F_3 = new LexerState("F_3", TokenType.FUNCTION_START );
-const F_4 = new LexerStateEnd("F_4", TokenType.FUNCTION_END );// Ending State
-const R_0 = new LexerState("R_0", TokenType.FUNCTION_NAME );// Ending State
+const F_0 = new LexerStateStart("F_0", TokenType.FUNCTION_NAME); // Start State
+const F_1 = new LexerState("F_1", TokenType.FUNCTION_NAME);
+const F_2 = new LexerState("F_2", TokenType.FUNCTION_NAME);
+const F_3 = new LexerState("F_3", TokenType.FUNCTION_START);
+const F_4 = new LexerStateEnd("F_4", TokenType.FUNCTION_END); // Ending State
+const R_0 = new LexerState("R_0", TokenType.FUNCTION_NAME); // Ending State
 
 F_0.jump(W_0);
 F_0.addEdge(ALPHA_CHARACTER_REGEX, F_1);
@@ -106,41 +106,39 @@ START_STATE.jump(F_0);
 // Start and End states
 const STARTING_STATE = START_STATE; // This represents the starting state of our directed graph.
 let CURRENT_STATE = STARTING_STATE;
-let CURRENT_TOKEN_TYPE : TokenType = STARTING_STATE.getTokenType();
+let CURRENT_TOKEN_TYPE: TokenType = STARTING_STATE.getTokenType();
 
-let CURRENT_CHARACTER = '';
-let accumulator = '';
+let CURRENT_CHARACTER = "";
+let accumulator = "";
 // Where in the file we are.
-let line_number      = 0;
+let line_number = 0;
 let character_number = 0;
 
-let STATE_RETURN_STACK : Array<LexerState> = [];
+let STATE_RETURN_STACK: Array<LexerState> = [];
 
-let STACK : Array<Token>= [];
+let STACK: Array<Token> = [];
 
 /**
  * This function performs lexical analysis of any input string and returns an array of the discovered tokens in the input string.
  * @param input String : This is the input string which will be lexed.
  * @returns Array<Token> : Tokens making up the input string.
  */
-export function lex(input : string) : Array<Token>{
-
+export function lex(input: string): Array<Token> {
   // init
-  CURRENT_STATE = STARTING_STATE
+  CURRENT_STATE = STARTING_STATE;
 
   // Here we accumulate a line of text, on state transition this is associated with a token.
   clearAccumulator();
 
   // Where in the file we are.
-  line_number      = 0;
+  line_number = 0;
   character_number = 0;
 
   // Initial state for our stack
   STACK = [];
 
   // Iterate through our input string.
-  for(let character of input){
-
+  for (let character of input) {
     // Set the current character;
     CURRENT_CHARACTER = character;
 
@@ -158,12 +156,12 @@ export function lex(input : string) : Array<Token>{
     console.log(accumulator, CURRENT_CHARACTER);
 
     // If we are starting in a failure state it means there was an error lexing the input
-    if(CURRENT_STATE === FAILURE_STATE){
+    if (CURRENT_STATE === FAILURE_STATE) {
       console.log("Lexing Error:", accumulator);
       console.log("Error at:", line_number, ":", character_number);
       return [];
     }
-    
+
     step(CURRENT_CHARACTER);
 
     // Add character to accumulator
@@ -179,26 +177,27 @@ export function lex(input : string) : Array<Token>{
   return STACK;
 }
 
-
-
-function step(character : string){
-  step:{
-    if(traverseEdgeIfPossible(character)){
+function step(character: string) {
+  step: {
+    if (traverseEdgeIfPossible(character)) {
       break step;
     }
 
     // At this point we are not taking an edge
 
     // Check if the state that we are in is an exit state
-    if((CURRENT_STATE instanceof LexerStateEnd) || (CURRENT_STATE instanceof LexerStateStartAndEnd)){
+    if (
+      CURRENT_STATE instanceof LexerStateEnd ||
+      CURRENT_STATE instanceof LexerStateStartAndEnd
+    ) {
       // If we are in an end state, we need to change the state to whatever is on the return stack
-      if(STATE_RETURN_STACK.length > 0){
+      if (STATE_RETURN_STACK.length > 0) {
         let return_state = STATE_RETURN_STACK.pop(); // Pop the return state off the stack
-        
-        console.log("Returning to", return_state?.name);
-        console.log("accumulator", accumulator);  
 
-        if(return_state){
+        console.log("Returning to", return_state?.name);
+        console.log("accumulator", accumulator);
+
+        if (return_state) {
           // // We are leaving an exit node we are going to push
           // let accrued_tokens = STACK.pop();
 
@@ -222,16 +221,15 @@ function step(character : string){
   }
 }
 
-function traverseEdgeIfPossible(character : string) : boolean{
+function traverseEdgeIfPossible(character: string): boolean {
   // Iterate through all edges of CURRENT_STATE and find a valid transition state.
   console.log("Edges:", CURRENT_STATE.edges);
   for(let edge of CURRENT_STATE.edges){
     console.log("Checking Regex:", edge.regex, character === '\n');
     // Test if this character abides by the gate on this rule.
-    if(edge.regex.test(character)){
-
+    if (edge.regex.test(character)) {
       // Check if we are taking a Jump Edge
-      if(edge instanceof LexerEdgeJump){
+      if (edge instanceof LexerEdgeJump) {
         let jump = edge as LexerEdgeJump;
 
         console.log("Jumping to", edge.destinationState.name);
@@ -239,16 +237,16 @@ function traverseEdgeIfPossible(character : string) : boolean{
 
         // Reset the type of token that we are currently building for.
         CURRENT_TOKEN_TYPE = TokenType.UNDEFINED;
-        
+
         // We are entering a new scope so we need to push an empty array onto the stack.
         // STACK.push([]);
 
         // Push the current state onto the RETURN state stack
-        if(edge instanceof LexerEdgeJumpWithReturn){
+        if (edge instanceof LexerEdgeJumpWithReturn) {
           let jumpWithReturn = jump as LexerEdgeJumpWithReturn;
           // In this case we have a designated return state that we want to return to when the stack is popped.
           STATE_RETURN_STACK.push(jumpWithReturn.return_state);
-        }else{
+        } else {
           // Nothing specified so return to the current state.
           STATE_RETURN_STACK.push(CURRENT_STATE);
         }
@@ -256,17 +254,17 @@ function traverseEdgeIfPossible(character : string) : boolean{
 
       // Sometimes there is type ambeguity when flowing from state A to B where in this condition we must have been in state S without knowing.
       // This block of code allows us to force a state S onto the stack.
-      if(edge instanceof LexerEdgeWithStateChange){
+      if (edge instanceof LexerEdgeWithStateChange) {
         let edgeWithStateChange = edge as LexerEdgeWithStateChange;
         accumulator += character;
-        CURRENT_CHARACTER = ''; // At this point we have processed the character taking us out of our current state.
+        CURRENT_CHARACTER = ""; // At this point we have processed the character taking us out of our current state.
         changeState(edge.destinationState, edgeWithStateChange.getTokenType());
         return true;
       }
 
       // We have found a valid transition state
       changeState(edge.destinationState);
-      
+
       return true;
     }
   }
@@ -274,13 +272,19 @@ function traverseEdgeIfPossible(character : string) : boolean{
   return false;
 }
 
-function changeState(new_state : LexerState, force_state_change : TokenType = CURRENT_STATE.getTokenType()){
-  if(!(new_state === CURRENT_STATE)){
+function changeState(
+  new_state: LexerState,
+  force_state_change: TokenType = CURRENT_STATE.getTokenType()
+) {
+  if (!(new_state === CURRENT_STATE)) {
     // current_state.onStateExit?.(accumulator);
     // new_state.onStateEnter?.(accumulator);
     console.log("Leaving", CURRENT_STATE.name, "Entering:", new_state.name);
-    
-    if(!(CURRENT_TOKEN_TYPE === new_state.getTokenType()) || !(force_state_change === CURRENT_STATE.getTokenType())){
+
+    if (
+      !(CURRENT_TOKEN_TYPE === new_state.getTokenType()) ||
+      !(force_state_change === CURRENT_STATE.getTokenType())
+    ) {
       // We have changed into a state which is producing a token of a type we are not expecting, therefore we will clear the accumulator
       pushTokenOntoStack(force_state_change);
     }
@@ -291,12 +295,18 @@ function changeState(new_state : LexerState, force_state_change : TokenType = CU
   }
 }
 
-function pushTokenOntoStack(token_type : TokenType = CURRENT_STATE.getTokenType()){
+function pushTokenOntoStack(
+  token_type: TokenType = CURRENT_STATE.getTokenType()
+) {
   // Dont push empty tokens onto our stack.
-  if(accumulator){
+  if (accumulator) {
     // If this token is on our list of ignored types, ignore this type.
-    if(IGNORED_TOKEN_TYPES.indexOf(token_type) < 0){
-      let token = new Token(token_type, getCurrentPositionInInput(), accumulator);
+    if (IGNORED_TOKEN_TYPES.indexOf(token_type) < 0) {
+      let token = new Token(
+        token_type,
+        getCurrentPositionInInput(),
+        accumulator
+      );
 
       // Push the new token onto the top of the stack
       STACK.push(token);
@@ -305,15 +315,15 @@ function pushTokenOntoStack(token_type : TokenType = CURRENT_STATE.getTokenType(
     }
 
     clearAccumulator();
-  }else{
+  } else {
     // Tokens should never be empty so if we get here it is because of a bug.
   }
 }
 
-function clearAccumulator(){
-  accumulator = '';
+function clearAccumulator() {
+  accumulator = "";
 }
 
-function getCurrentPositionInInput():Position{
+function getCurrentPositionInInput(): Position {
   return new Position(line_number, character_number);
 }
