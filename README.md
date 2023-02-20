@@ -1,4 +1,6 @@
-# :checkered_flag:CS536# :checkered_flag:
+# :checkered_flag: ProGrid :checkered_flag:
+
+![ProGrid](public/ProGrid.png)
 
 # How It's Made :nut_and_bolt: :hammer::wrench::
 
