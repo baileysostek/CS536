@@ -18,7 +18,7 @@ npm i
 npm start
 ```
 
-You should then be able to visit `localchost:3000` in your browser and see the client running. If you make changes in the `App.js` file, you should see them reflected.
+You should then be able to visit `localchost:3000` in your browser and see the client running. If you make changes in the `App.tsx` file, you should see them reflected.
 
 # Clean :video_game:
 
