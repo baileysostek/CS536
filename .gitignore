@@ -21,3 +21,29 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Logs
+logs
+*.log
+
+#dist folder
+dist/
+
+#storybook output folder
+.public
+
+#storybook ts build output
+build/
+
+#Webstorm metadata
+.idea/
+*.iml
+
+#VSCode metadata
+.vscode/
+
+# Dependency directory
+node_modules/
+
+# macOS X files
+.DS_Store

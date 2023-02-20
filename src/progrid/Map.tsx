@@ -1,13 +1,12 @@
 import { Cell } from "./Cell";
 
-export class Map{
+export class Map {
+  readonly width: number;
+  readonly height: number;
 
-  readonly width  : number;
-  readonly height : number;
+  readonly grid: Array<Cell>;
 
-  readonly grid : Array<Cell>;
-
-  constructor(width : number, height : number){
+  constructor(width: number, height: number) {
     // Constructor specifies our width and height.
     this.width = width;
     this.height = height;
@@ -16,7 +15,7 @@ export class Map{
     this.grid = new Array<Cell>(this.width * this.height);
   }
 
-  build(){
+  build() {
     console.log("Build Save for this map", {});
   }
 }
