@@ -1,4 +1,4 @@
-import { Cell } from "./Cell";
+import { Cell } from "./Tile";
 
 export class Map{
 
@@ -15,6 +15,29 @@ export class Map{
     // Setup our grid to be an empty grid of size width * height
     this.grid = new Array<Cell>(this.width * this.height);
     
+  }
+
+  setTile(pos_x:number, pos_y:number, id:number) {
+    
+  }
+
+  getTile(pos_x:number, pos_y:number, id:number) : number {
+    return 0;
+  }
+
+  indexOnMap() : boolean {
+    return true;
+  }
+
+  xyToIndex(pos_x : number, pos_y : number) : number {
+    return 0;
+  }
+
+  indexToXY(index : number) : {pos_x : number, pos_y : number} {
+    return {
+      pos_x:0,
+      pos_y:0
+    };
   }
 
   build(){
