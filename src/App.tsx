@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import * as gen from './generator';
 
 import SimulationEditor from './views/simulation/SimulationEditor';
 import { registerFunction } from './apiary/parser/ApiaryParser';
@@ -51,6 +52,10 @@ function App() {
 
   registerFunction("map", (width : number, height : number) => {
     return new Map(width, height);
+  })
+
+  registerFunction("drunkardsWalkMap", (width, height, steps) => {
+    gen.drunkardsWalk(10, 10, 40);
   })
   
 
