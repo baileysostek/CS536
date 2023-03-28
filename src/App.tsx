@@ -6,6 +6,7 @@ import * as gen from './generator';
 import SimulationEditor from './views/simulation/SimulationEditor';
 import { registerFunction } from './apiary/parser/ApiaryParser';
 import { Map } from './progrid/Map';
+import { Tile } from './progrid/Tile';
 
 
 function App() {
@@ -45,7 +46,6 @@ function App() {
   })
 
   // ProGrid specific functions
-
   registerFunction("build", (map : Map) => {
     return map.build();
   })
@@ -53,6 +53,10 @@ function App() {
   registerFunction("map", (width : number, height : number) => {
     return new Map(width, height);
   })
+
+  registerFunction("grid", (name : string, id: number) => {
+    return new Tile(name, id);
+  });
 
   registerFunction("drunkardsWalkMap", (width, height, steps) => {
     return gen.drunkardsWalk(width, height, steps);
