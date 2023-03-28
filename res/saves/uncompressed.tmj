@@ -1,0 +1,38 @@
+{ 
+  "compressionlevel":-1,
+  "height":2,
+  "infinite":false,
+  "layers":[
+          {
+          "data":[307, 71,
+              55, 485],
+          "height":2,
+          "id":1,
+          "name":"Tile Layer 1",
+          "opacity":1,
+          "type":"tilelayer",
+          "visible":true,
+          "width":2,
+          "x":0,
+          "y":0
+          }],
+  "nextlayerid":2,
+  "nextobjectid":1,
+  "orientation":"orthogonal",
+  "renderorder":"right-down",
+  "tiledversion":"1.9.2",
+  "tileheight":5,
+  "tilesets":[
+          {
+          "firstgid":1,
+          "source":"ground test.tsx"
+          }, 
+          {
+          "firstgid":257,
+          "source":"rock_diffuse_wet.tsx"
+          }],
+  "tilewidth":5,
+  "type":"map",
+  "version":"1.9",
+  "width":2
+}

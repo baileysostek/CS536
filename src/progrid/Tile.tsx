@@ -5,8 +5,11 @@ export class Cell{
   // Layer?
   // Rotation?
 
+  readonly name: string;
+  readonly id = 0;
+
   constructor(){
 
   }
-
+  
 }
