@@ -52,7 +52,6 @@ function App() {
   registerFunction("map", (width : number, height : number) => {
     return new Map(width, height);
   })
-  
 
   return (
     <div className="App">
