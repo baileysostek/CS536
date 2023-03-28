@@ -1,5 +1,6 @@
+import { Map } from "./progrid/Map";
 
-export function drunkardsWalk(width, height, steps){
+export function drunkardsWalk(map:Map, width, height, steps){
     const mapVals = []
     // initialize with walls
     for(let i=0; i < width; i++){
