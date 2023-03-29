@@ -69,7 +69,7 @@ function App() {
   })
 
   registerFunction("drunkardsWalkMap", (width, height, steps) => {
-    return gen.drunkardsWalk(width, height, steps);
+    //return gen.drunkardsWalk(width, height, steps);
   })
   
 
