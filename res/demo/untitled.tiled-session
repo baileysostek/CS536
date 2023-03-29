@@ -12,6 +12,14 @@
                 "y": 391.33333333333326
             }
         },
+        "map_name.json": {
+            "scale": 0.932373046875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 512.1340665095574,
+                "y": 669.7962817491491
+            }
+        },
         "test.tsx": {
             "scaleInDock": 1
         }
@@ -20,6 +28,7 @@
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "map_name.json",
         "map_name (3).json"
     ]
 }

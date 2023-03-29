@@ -1,6 +1,6 @@
 import { Map } from "./progrid/Map";
 
-export function drunkardsWalk(map:Map, steps){
+export function drunkardsWalk(map:Map, steps:number, fill_tile : number){
     // takes in a Map with all 1s
     let newMap = map;
     
@@ -11,7 +11,7 @@ export function drunkardsWalk(map:Map, steps){
     // walk for the designated number of steps
     for(let i=0; i < steps; i++){
         // Set current tile to 0
-        newMap.setTile(currentX, currentY, 0);
+        newMap.setTile(currentX, currentY, fill_tile);
         // Step in a random cardinal dirrection
         let randDirection = Math.floor(Math.random() * 4);
         console.log(randDirection);

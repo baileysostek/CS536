@@ -65,11 +65,25 @@ function App() {
       map.setTile(position.pos_x, position.pos_y, id);
     }
 
-    return map.build();
+    return map;
   })
 
-  registerFunction("drunkardsWalkMap", (width, height, steps) => {
-    //return gen.drunkardsWalk(width, height, steps);
+  registerFunction("replace", (map : Map, target : number, replacement : number, chance : number) => {
+
+    for(let index = 0; index < map.grid.length; index++){
+      let position = map.indexToXY(index);
+      if(map.getTile(position.pos_x, position.pos_y) == target){
+          if(Math.random() <= chance){
+            map.setTile(position.pos_x, position.pos_y, replacement);
+          }
+      }
+    }
+
+    return map;
+  })
+
+  registerFunction("drunkardsWalkMap", (map : Map, steps : number, fill_tile : number) => {
+    return gen.drunkardsWalk(map, steps, fill_tile);
   })
   
 
