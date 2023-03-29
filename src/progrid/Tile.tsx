@@ -1,4 +1,4 @@
-export class Cell{
+export class Tile{
 
   // We will put the data needed to represent a cell here. 
   // Image?
@@ -6,10 +6,11 @@ export class Cell{
   // Rotation?
 
   readonly name: string;
-  readonly id = 0;
+  readonly id  : number;
 
-  constructor(){
-
+  constructor(name : string, id : number){
+    this.name = name;
+    this.id = id;
   }
   
 }

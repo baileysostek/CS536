@@ -6,6 +6,7 @@ import * as gen from './generator';
 import SimulationEditor from './views/simulation/SimulationEditor';
 import { registerFunction } from './apiary/parser/ApiaryParser';
 import { Map } from './progrid/Map';
+import { Tile } from './progrid/Tile';
 
 
 function App() {
@@ -45,7 +46,6 @@ function App() {
   })
 
   // ProGrid specific functions
-
   registerFunction("build", (map : Map) => {
     return map.build();
   })
@@ -54,8 +54,36 @@ function App() {
     return new Map(width, height);
   })
 
-  registerFunction("drunkardsWalkMap", (width, height, steps) => {
-    return gen.drunkardsWalk(width, height, steps);
+  registerFunction("grid", (name : string, id: number) => {
+    return new Tile(name, id);
+  });
+
+  registerFunction("fill", (map : Map, id : number) => {
+
+    for(let index = 0; index < map.grid.length; index++){
+      let position = map.indexToXY(index);
+      map.setTile(position.pos_x, position.pos_y, id);
+    }
+
+    return map;
+  })
+
+  registerFunction("replace", (map : Map, target : number, replacement : number, chance : number) => {
+
+    for(let index = 0; index < map.grid.length; index++){
+      let position = map.indexToXY(index);
+      if(map.getTile(position.pos_x, position.pos_y) == target){
+          if(Math.random() <= chance){
+            map.setTile(position.pos_x, position.pos_y, replacement);
+          }
+      }
+    }
+
+    return map;
+  })
+
+  registerFunction("drunkardsWalkMap", (map : Map, steps : number, fill_tile : number) => {
+    return gen.drunkardsWalk(map, steps, fill_tile);
   })
   
 
