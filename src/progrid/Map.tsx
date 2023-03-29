@@ -87,19 +87,30 @@ export class Map{
       "orientation":"orthogonal",
       "renderorder":"right-down",
       "tiledversion":"1.9.2",
-      "tileheight":16,
       "tilesets":[
         {
          "firstgid":1,
-         "source":"test.tsx"
+         "source":"tmw_desert_spacing.tsx"
         }],
-      "tilewidth":16,
+      "tileheight":32,
+      "tilewidth":32,
       "type":"map",
       "version":"1.9"
     }
 
-    // 
-    console.log("Test:", JSON.stringify(save_file));
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(save_file)));
+    element.setAttribute('download', "map_name.json");
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+
+    console.log(save_file);
 
     return save_file;
   }

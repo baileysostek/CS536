@@ -58,6 +58,16 @@ function App() {
     return new Tile(name, id);
   });
 
+  registerFunction("fill", (map : Map, id : number) => {
+
+    for(let index = 0; index < map.grid.length; index++){
+      let position = map.indexToXY(index);
+      map.setTile(position.pos_x, position.pos_y, id);
+    }
+
+    return map.build();
+  })
+
   registerFunction("drunkardsWalkMap", (width, height, steps) => {
     return gen.drunkardsWalk(width, height, steps);
   })

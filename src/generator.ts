@@ -1,16 +1,16 @@
+import { Map } from "./progrid/Map";
 
 export function drunkardsWalk(width, height, steps){
-    const mapVals = []
-    // initialize with walls
-    for(let i=0; i < width; i++){
-        mapVals[i] = new Array(height).fill(1);
-    }
+    const mapVals = new Map(width, height);
+
     // walk start at the center
     let currentX = Math.floor(width/2); 
     let currentY = Math.floor(height/2); 
     // walk for the designated number of steps
     for(let i=0; i < steps; i++){
-        mapVals[currentX][currentY] = 0;
+        if(mapVals.xyOnMap(currentX, currentY)){
+            mapVals.setTile(currentX, currentY, 1);
+        }
         let randDirection = Math.floor(Math.random() * 4);
         console.log(randDirection);
         switch(randDirection) {
@@ -33,3 +33,5 @@ export function drunkardsWalk(width, height, steps){
     //console.log(mapVals);
     return mapVals;
 }
+
+

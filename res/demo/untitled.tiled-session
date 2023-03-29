@@ -1,0 +1,25 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "map_name (3).json": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 437.66666666666663,
+                "y": 391.33333333333326
+            }
+        },
+        "test.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "map_name (3).json"
+    ]
+}
