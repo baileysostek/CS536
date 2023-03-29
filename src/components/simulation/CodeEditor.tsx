@@ -22,12 +22,15 @@ type CodeEditorState = {
 export const CodeEditor : React.FunctionComponent<CodeEditorState> = (props : CodeEditorProps) => {
 	
 	const [body, setBody] = React.useState(`
-var("width", 5)
-var("height", add(var("width"), var("width")))
+var("map", map(32, 32))
 
-var("map", map(var("width"), var("height")))
+fill(var("map"), 10)
 
-build(var("map"))
+drunkardsWalkMap(var("map"), 500, 30)
+replace(var("map"), 30, 31, 0.2)
+replace(var("map"), 31, 32, 0.2)
+
+build(var("map"));
 	`);
 
 	function handleEditorChange(value, event) {

@@ -17,16 +17,16 @@ export function drunkardsWalk(map:Map, steps:number, fill_tile : number){
         console.log(randDirection);
         switch(randDirection) {
             case 0:
-                if(newMap.indexOnMap(newMap.xyToIndex(currentX+1, currentY))){currentX++;}            
+                if(newMap.xyOnMap(currentX+1, currentY)){currentX++;}            
                 break;
             case 1:
-                if(newMap.indexOnMap(newMap.xyToIndex(currentX-1, currentY))){currentX--;}
+                if(newMap.xyOnMap(currentX-1, currentY)){currentX--;}
                 break;
             case 2:
-                if(newMap.indexOnMap(newMap.xyToIndex(currentX, currentY+1))){currentY++;}
+                if(newMap.xyOnMap(currentX, currentY+1)){currentY++;}
                 break;
             case 3:
-                if(newMap.indexOnMap(newMap.xyToIndex(currentX, currentY-1))){currentY--;}
+                if(newMap.xyOnMap(currentX, currentY-1)){currentY--;}
                 break;
             default:
                 break;
