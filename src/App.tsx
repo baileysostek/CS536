@@ -9,12 +9,14 @@ import { Map } from './progrid/Map';
 
 function App() {
 
-  registerFunction("print", (...parameters) => {
-    console.log(...parameters)
-  })
+  registerFunction("add", (a, ...b) => {
+    
+    let value = a;
 
-  registerFunction("add", (a : number, b : number) => {
-    let value = a + b;
+    for(let argument of b){
+      value += argument;
+    }
+
     return value;
   })
 
@@ -41,6 +43,10 @@ function App() {
   registerFunction("pow", (a : number, b : number) => {
     let value = Math.pow(a, b);
     return value;
+  })
+
+  registerFunction("equal", (a : number, b : number) => {
+    return a === b;
   })
 
   // ProGrid specific functions

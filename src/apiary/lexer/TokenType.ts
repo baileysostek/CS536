@@ -6,7 +6,7 @@ export enum TokenType{
 
   // 
   FUNCTION_NAME,
-  FUNCTION_START ,
+  FUNCTION_START,
   FUNCTION_END,
 
   //
@@ -14,6 +14,9 @@ export enum TokenType{
 
   // Variables
   NUMBER,
-  STRING ,
-  BOOLEAN
+  STRING,
+  BOOLEAN,
+
+  // Used for bodies of functions and other things that will be evaluated in the future
+  FUTURE
 }

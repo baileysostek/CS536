@@ -10,8 +10,12 @@ import { LexerStateStart } from "./LexerStateStart";
 import { LexerState } from "./LexerState";
 import { TokenType } from "./TokenType";
 
+const keywords : Map<String, TokenType> = new Map<String, TokenType>();
+keywords.set('true', TokenType.BOOLEAN);
+keywords.set('false', TokenType.BOOLEAN);
+
 // If this is debug mode
-const DEBUG = true;
+const DEBUG = false;
 
 // Define all states
 const FAILURE_STATE = new LexerState("Failure State");
@@ -68,6 +72,22 @@ S_1.addEdge(NOT_STRING_CHARACTER_REGEX, S_1);
 S_1.addEdge(STRING_CHARACTER_REGEX, S_2);
 S_2.jump(W_0);
 
+// Scopes
+const SCOPE_CHARACTER_REGEX = /^[{]$/;
+const NOT_SCOPE_CHARACTER_REGEX = /^[^}]$/;
+const SCOPE_CLOSE_CHARACTER_REGEX = /^[}]$/;
+
+const SCOPE_0 = new LexerStateStart("SCOPE_0", TokenType.FUTURE);
+const SCOPE_1 = new LexerState("SCOPE_1", TokenType.FUTURE);
+const SCOPE_2 = new LexerStateEnd("SCOPE_2", TokenType.FUTURE);
+
+//TODO when you see a { push new stack frame, when you see } pop stack frame.
+SCOPE_0.addEdge(SCOPE_CHARACTER_REGEX, SCOPE_1);
+SCOPE_0.jump(W_0);
+SCOPE_1.addEdge(NOT_SCOPE_CHARACTER_REGEX, SCOPE_1);
+SCOPE_1.addEdge(SCOPE_CLOSE_CHARACTER_REGEX, SCOPE_2);
+SCOPE_2.jump(W_0);
+
 // States and Edges for lexing a function.
 const ALPHA_CHARACTER_REGEX = /^[a-z|A-Z]$/;
 const ALPHANUMERIC_REGEX = /^[a-z|A-Z|0-9]$/;
@@ -87,6 +107,17 @@ F_0.addEdge(ALPHA_CHARACTER_REGEX, F_1);
 F_1.addEdge(ALPHANUMERIC_REGEX, F_1);
 F_1.jumpWithReturn(W_0, F_2);
 F_1.addEdge(OPEN_PAREN_REGEX, F_3);
+F_1.setFailCallback((accumulator : String) => {
+  if(keywords.has(accumulator)){
+    let keyword_override = keywords.get(accumulator);
+    pushTokenOntoStack(keyword_override);
+    CURRENT_TOKEN_TYPE = keyword_override;
+    CURRENT_STATE = R_0;
+    return true;
+  }else{
+    pushTokenOntoStack(TokenType.UNDEFINED);
+  }
+})
 F_2.addEdge(OPEN_PAREN_REGEX, F_3);
 F_3.jump(W_0);
 F_3.addEdge(CLOSE_PAREN_REGEX, F_4);
@@ -98,10 +129,12 @@ R_0.addEdgeWithStateChange(PARAM_DELIMITER_REGEX, F_3, TokenType.DELIMITER);
 F_3.jumpWithReturn(F_0, R_0); // Functions can have functions as params (Nested Functions)
 F_3.jumpWithReturn(N_0, R_0); // Functions can have numbers as params
 F_3.jumpWithReturn(S_0, R_0); // Functions can have strings as params
+F_3.jumpWithReturn(SCOPE_0, R_0); // Functions can have scopes as params
 
 // Link states together
 START_STATE.jump(NEW_LINE);
 START_STATE.jump(F_0);
+START_STATE.jump(S_0);
 
 // Start and End states
 const STARTING_STATE = START_STATE; // This represents the starting state of our directed graph.
@@ -151,16 +184,20 @@ export function lex(input : string) : Array<Token>{
     if(character === '\n'){
       line_number++;
       character_number = 0;
-      console.log("New Line Character:");
+      if(DEBUG){
+        console.log("New Line Character:");
+      }
     }
 
     // Debug print
-    console.log(accumulator, CURRENT_CHARACTER);
+    if(DEBUG){
+      console.log(accumulator, CURRENT_CHARACTER);
+    }
 
     // If we are starting in a failure state it means there was an error lexing the input
     if(CURRENT_STATE === FAILURE_STATE){
-      console.log("Lexing Error:", accumulator);
-      console.log("Error at:", line_number, ":", character_number);
+      console.error("Lexing Error:", accumulator, CURRENT_CHARACTER);
+      console.error("Error at:", line_number, ":", character_number);
       return [];
     }
     
@@ -174,7 +211,9 @@ export function lex(input : string) : Array<Token>{
   }
 
   pushTokenOntoStack();
-  console.log(STACK);
+  if(DEBUG){
+    console.log(STACK);
+  }
 
   return STACK;
 }
@@ -187,16 +226,17 @@ function step(character : string){
       break step;
     }
 
-    // At this point we are not taking an edge
-
+    // At this point we are not taking an edge    console.log(CURRENT_STATE, accumulator);
     // Check if the state that we are in is an exit state
     if((CURRENT_STATE instanceof LexerStateEnd) || (CURRENT_STATE instanceof LexerStateStartAndEnd)){
       // If we are in an end state, we need to change the state to whatever is on the return stack
       if(STATE_RETURN_STACK.length > 0){
         let return_state = STATE_RETURN_STACK.pop(); // Pop the return state off the stack
-        
-        console.log("Returning to", return_state?.name);
-        console.log("accumulator", accumulator);  
+
+        if(DEBUG){
+          console.log("Returning to", return_state?.name);
+          console.log("accumulator", accumulator);  
+        }
 
         if(return_state){
           // // We are leaving an exit node we are going to push
@@ -216,17 +256,29 @@ function step(character : string){
         }
       }
     }
-    
-    console.log("Test");
+
+    // If this state has a failure callback call that callback. 
+    if(CURRENT_STATE.onFailure(accumulator)){
+      // We would enter a failure state however the state transition has been handled by the callback function.
+      step(character);
+      break step;
+    }
+
+    console.log("Entering Failure State", CURRENT_STATE, CURRENT_TOKEN_TYPE, character);
+
     changeState(FAILURE_STATE);
   }
 }
 
 function traverseEdgeIfPossible(character : string) : boolean{
   // Iterate through all edges of CURRENT_STATE and find a valid transition state.
-  console.log("Edges:", CURRENT_STATE.edges);
+  if(DEBUG){
+    console.log("Edges:", CURRENT_STATE.edges);
+  }
   for(let edge of CURRENT_STATE.edges){
-    console.log("Checking Regex:", edge.regex, character === '\n');
+    if(DEBUG){
+      console.log("Checking Regex:", edge.regex, character === '\n');
+    }
     // Test if this character abides by the gate on this rule.
     if(edge.regex.test(character)){
 
@@ -234,8 +286,10 @@ function traverseEdgeIfPossible(character : string) : boolean{
       if(edge instanceof LexerEdgeJump){
         let jump = edge as LexerEdgeJump;
 
-        console.log("Jumping to", edge.destinationState.name);
-        console.log("accumulator", accumulator);
+        if(DEBUG){
+          console.log("Jumping to", edge.destinationState.name);
+          console.log("accumulator", accumulator);
+        }
 
         // Reset the type of token that we are currently building for.
         CURRENT_TOKEN_TYPE = TokenType.UNDEFINED;
@@ -278,7 +332,9 @@ function changeState(new_state : LexerState, force_state_change : TokenType = CU
   if(!(new_state === CURRENT_STATE)){
     // current_state.onStateExit?.(accumulator);
     // new_state.onStateEnter?.(accumulator);
-    console.log("Leaving", CURRENT_STATE.name, "Entering:", new_state.name);
+    if(DEBUG){
+      console.log("Leaving", CURRENT_STATE.name, "Entering:", new_state.name);
+    }
     
     if(!(CURRENT_TOKEN_TYPE === new_state.getTokenType()) || !(force_state_change === CURRENT_STATE.getTokenType())){
       // We have changed into a state which is producing a token of a type we are not expecting, therefore we will clear the accumulator
@@ -296,12 +352,21 @@ function pushTokenOntoStack(token_type : TokenType = CURRENT_STATE.getTokenType(
   if(accumulator){
     // If this token is on our list of ignored types, ignore this type.
     if(IGNORED_TOKEN_TYPES.indexOf(token_type) < 0){
+      
+      // PreProcessing
+      switch(token_type){
+        case TokenType.STRING :{
+          accumulator = accumulator.substring(1, accumulator.length - 1);
+        }
+      }
+
       let token = new Token(token_type, getCurrentPositionInInput(), accumulator);
 
-      // Push the new token onto the top of the stack
       STACK.push(token);
 
-      console.log("Adding Token:", token);
+      if(DEBUG){
+        console.log("Adding Token:", token);
+      }
     }
 
     clearAccumulator();

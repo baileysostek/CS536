@@ -4,12 +4,15 @@ import { LexerEdgeJump } from "./LexerEdgeJump";
 import { LexerEdgeJumpWithReturn } from "./LexerEdgeJumpWithReturn";
 import { LexerStateStart } from "./LexerStateStart";
 import { TokenType } from "./TokenType";
+import { Token } from "./Token";
 
 export class LexerState{
   readonly name: string;
   readonly edges: Array<LexerEdge> = [];
 
   private token_type : TokenType = TokenType.UNDEFINED;
+
+  private fail_callback : (accumulator : String) => boolean;
 
   constructor(name : string, token_type ?: TokenType){
     this.name = name;
@@ -40,5 +43,16 @@ export class LexerState{
 
   getTokenType(): TokenType{
     return this.token_type;
+  }
+
+  onFailure(accumulator : String) : boolean{
+    if(this.fail_callback){
+      return this.fail_callback(accumulator);
+    }
+    return false;
+  }
+
+  setFailCallback(fail_callback : (accumulator : String) => boolean){
+    this.fail_callback = fail_callback;
   }
 }
