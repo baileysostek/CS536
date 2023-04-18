@@ -104,6 +104,10 @@ function App() {
   registerFunction("drunkardsWalkMap", (map : Map, steps : number, fill_tile : number) => {
     return gen.drunkardsWalk(map, steps, fill_tile);
   })
+
+  registerFunction("maze", (map : Map, wall_tile: number, floor_tile: number) => {
+    return gen.maze(map, wall_tile, floor_tile);
+  })
   
 
   return (
