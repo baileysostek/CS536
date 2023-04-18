@@ -35,7 +35,7 @@ export function drunkardsWalk(map:Map, steps:number, fill_tile : number){
         newMap.setTile(currentX, currentY, fill_tile);
         // Step in a random cardinal dirrection
         let randDirection = Math.floor(randomFloat() * 4);
-        console.log(randDirection);
+
         switch(randDirection) {
             case 0:
                 if(newMap.xyOnMap(currentX+1, currentY)){currentX++;}            
@@ -66,15 +66,15 @@ export function maze(map:Map, wall_tile: number, floor_tile: number){
     }
     
     // start at a random cell
-    const startX = Math.floor(Math.random() * map.width);
-    const startY = Math.floor(Math.random() * map.height);
+    const startX = Math.floor(randomFloat() * map.width);
+    const startY = Math.floor(randomFloat() * map.height);
 
     // Add the starting cell to the list of frontier cells
     let frontier = [[startX, startY]];
 
     while (frontier.length > 0) {
         // Choose a random frontier cell
-        const index = Math.floor(Math.random() * frontier.length);
+        const index = Math.floor(randomFloat() * frontier.length);
         const [x, y] = frontier[index];
 
         // Remove the cell from the frontier list
@@ -101,7 +101,7 @@ export function maze(map:Map, wall_tile: number, floor_tile: number){
 
         if (neighbors.length > 0) {
             // Choose a random neighbor to connect to
-            const [nx, ny, mx, my] = neighbors[Math.floor(Math.random() * neighbors.length)];
+            const [nx, ny, mx, my] = neighbors[Math.floor(randomFloat() * neighbors.length)];
 
             // Carve a path between the current cell and the neighbor
             map.setTile(nx, ny, floor_tile);
