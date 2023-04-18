@@ -232,7 +232,6 @@ function step(character : string){
       // If we are in an end state, we need to change the state to whatever is on the return stack
       if(STATE_RETURN_STACK.length > 0){
         let return_state = STATE_RETURN_STACK.pop(); // Pop the return state off the stack
-
         if(DEBUG){
           console.log("Returning to", return_state?.name);
           console.log("accumulator", accumulator);  
@@ -363,7 +362,6 @@ function pushTokenOntoStack(token_type : TokenType = CURRENT_STATE.getTokenType(
       let token = new Token(token_type, getCurrentPositionInInput(), accumulator);
 
       STACK.push(token);
-
       if(DEBUG){
         console.log("Adding Token:", token);
       }
