@@ -15,7 +15,7 @@ keywords.set('true', TokenType.BOOLEAN);
 keywords.set('false', TokenType.BOOLEAN);
 
 // If this is debug mode
-const DEBUG = false;
+const DEBUG = true;
 
 // Define all states
 const FAILURE_STATE = new LexerState("Failure State");

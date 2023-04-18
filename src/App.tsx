@@ -8,8 +8,21 @@ import { registerFunction } from './apiary/parser/ApiaryParser';
 import { Map } from './progrid/Map';
 import { Tile } from './progrid/Tile';
 
-
 function App() {
+
+  // Random values
+  registerFunction("seed", (seed) => {
+    gen.seedRandom(seed);
+    return gen.getRandom();
+  })
+
+  registerFunction("randomInt", (range) => {
+    return gen.randomInt(0, range);
+  })
+
+  registerFunction("randomFloat", () => {
+    return gen.randomFloat();
+  })
 
   registerFunction("add", (a, ...b) => {
     
@@ -79,7 +92,7 @@ function App() {
     for(let index = 0; index < map.grid.length; index++){
       let position = map.indexToXY(index);
       if(map.getTile(position.pos_x, position.pos_y) == target){
-          if(Math.random() <= chance){
+          if(gen.randomFloat() <= chance){
             map.setTile(position.pos_x, position.pos_y, replacement);
           }
       }
