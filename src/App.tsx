@@ -108,6 +108,18 @@ function App() {
   registerFunction("maze", (map : Map, wall_tile: number, floor_tile: number) => {
     return gen.maze(map, wall_tile, floor_tile);
   })
+
+  registerFunction("cellularAutomata", (map : Map, wall_tile: number, floor_tile: number, randomFillPercent: number) => {
+    return gen.cellularAutomata(map, wall_tile, floor_tile, randomFillPercent);
+  })
+
+  registerFunction( "poissonDistribution", (map:Map, placed_tile: number, floor_tile:number, radius: number)=>{
+    return gen.poissonDistribution(map, placed_tile, floor_tile, radius);
+  })
+
+  registerFunction("mapOverride", (map1:Map, tileToReplace: number, map2:Map) => {
+    return gen.mapOverride(map1, tileToReplace, map2);
+  })
   
 
   return (
