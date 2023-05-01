@@ -7,6 +7,7 @@ import SimulationEditor from './views/simulation/SimulationEditor';
 import { registerFunction } from './apiary/parser/ApiaryParser';
 import { Map } from './progrid/Map';
 import { Tile } from './progrid/Tile';
+import { TileBag } from './progrid/TileBag';
 
 function App() {
 
@@ -73,6 +74,10 @@ function App() {
     return new Map(width, height);
   })
 
+  registerFunction("bag", (...ids) => {
+    return new TileBag(ids);
+  })
+
   registerFunction("grid", (name : string, id: number) => {
     return new Tile(name, id);
   });
@@ -85,6 +90,10 @@ function App() {
     }
 
     return map;
+  })
+
+  registerFunction("perlen", (map : Map, noise_scale : number, bag : TileBag) => {
+    return gen.perlenNoise(map, noise_scale, bag);
   })
 
   registerFunction("replace", (map : Map, target : number, replacement : number, chance : number) => {

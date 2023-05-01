@@ -3,6 +3,7 @@ import { Map } from "./progrid/Map";
 
 // Keep an instance of random
 import * as random from "random-seed";
+import { TileBag } from "./progrid/TileBag";
 let random_instance = random.create();
 
 export function getRandom(){
@@ -20,6 +21,58 @@ export function randomFloat(){
 
 export function randomInt(min, max){
     return random_instance.intBetween(min, max);
+}
+
+export function perlenNoise(map : Map, noise_scale : number, bag : TileBag) {
+
+    let samples_x = Math.floor(map.width * (1.0 - noise_scale)) + 2;
+    let samples_y = Math.floor(map.width * (1.0 - noise_scale)) + 2;
+
+    // Generate our random Points.
+    let samples = new Array<number>(samples_x  * samples_y);
+    let index = 0;
+    for(let sample_index of samples){
+        samples[index] = Math.random();
+        index++;
+    }
+
+    let values = [];
+    
+    // Now for every tile on the map, choose an interpolation
+    for(let j = 0; j < map.height; j++){
+        let row = [];
+        for(let i = 0; i < map.width; i++){
+            let left = Math.floor((i / map.width) / noise_scale);
+            let right = left + 1;
+            let top = Math.floor((j / map.height) / noise_scale);
+            let bottom = top + 1;
+
+            let left_top = samples[left + (top * map.width)];
+            let right_top = samples[right + (top * map.width)];
+            let left_bottom = samples[left + (bottom * map.width)];
+            let right_bottom = samples[right + (bottom * map.width)];
+
+            let delta_x = ((i / map.width) % noise_scale) / noise_scale;
+            let delta_y = ((j / map.height) % noise_scale) / noise_scale;
+
+            let lerp_top = lerp(left_top, right_top, delta_x);
+            let lerp_bottom = lerp(left_bottom, right_bottom, delta_x); 
+
+            let lerp_final = lerp(lerp_top, lerp_bottom, delta_y);
+            // map.setTile(i, j, bag.getTile(lerp_final));
+            row.push(lerp_final);
+            map.setTile(i, j, bag.get(lerp_final));
+        }
+        values.push(row);
+    }
+
+    console.log(values);
+
+    return map;
+}
+
+function lerp(start : number, end : number, theta : number) {
+    return (start * (1.0 - theta)) + (end * theta);
 }
 
 export function drunkardsWalk(map:Map, steps:number, fill_tile : number){
@@ -179,7 +232,7 @@ export function randFill(map:Map, wall_tile: number, floor_tile: number, randomF
     // randomly fill the map to initialize
     for(let x=0; x < map.width; x++){
         for(let y=0; y < map.height; y++){
-            let rand = Math.random();
+            let rand = randomFloat();
             if(includeborder && (x == 0 || y == 0 || x == map.width - 1 || y == map.height -1)){
                 map.setTile(x,y,wall_tile);
             }else if(rand < randomFillPercent){
@@ -201,8 +254,8 @@ export function poissonDistribution(map:Map, placed_tile: number, floor_tile:num
 
     while(!failedToHit){
         for(let i = 0; i < throwsBeforeReject; i++){
-            let randX = Math.floor(Math.random()*map.width);
-            let randY = Math.floor(Math.random()*map.height);
+            let randX = Math.floor(randomFloat()*map.width);
+            let randY = Math.floor(randomFloat()*map.height);
             if(map.getTile(randX, randY) == -1){
                 // place an object
                 map.setTile(randX, randY, placed_tile);
